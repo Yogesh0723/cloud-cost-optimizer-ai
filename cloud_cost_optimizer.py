@@ -30,6 +30,8 @@ import warnings
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from typing import List, Dict, Any, Optional, Tuple
+from pymongo import MongoClient
+
 
 import numpy as np
 import pandas as pd
@@ -544,6 +546,28 @@ def log_feedback(out_dir: str, action_id: str, decision: str, metadata: Optional
     with open(path, "a", encoding="utf-8") as f:
         f.write(json.dumps(entry) + "\n")
 
+def save_to_mongo(db_url: str, db_name: str, data_dict: Dict[str, pd.DataFrame], recs: List[Dict[str, Any]]):
+    """Save all generated dataframes and recommendations into MongoDB"""
+    client = MongoClient(db_url)
+    db = client[db_name]
+
+    # Save each dataframe as a collection
+    for key, df in data_dict.items():
+        if df is None or len(df) == 0:
+            continue
+        records = df.to_dict(orient="records")
+        if records:
+            db[key].delete_many({})  # clean old
+            db[key].insert_many(records)
+
+    # Save recommendations
+    if recs:
+        db["recommendations"].delete_many({})
+        db["recommendations"].insert_many(recs)
+
+    print(f"✅ Data saved into MongoDB Database: {db_name}")
+
+
 # ---------------------------
 # Main
 # ---------------------------
@@ -603,6 +627,29 @@ def main(argv=None):
 
     print("[7/7] Writing outputs… →", out_dir_ts)
     write_all_outputs(out_dir_ts, insights, idle_df, rs_df, anomalies, forecast_df, recs, savings_proj)
+    
+    # -----------------------------
+    # Save to MongoDB
+    # -----------------------------
+    mongo_url = "mongodb+srv://yogupatil135:Yogesh%402001@laxmidevi.liw3ism.mongodb.net/?retryWrites=true&w=majority&appName=laxmiDevi"
+    db_name = "finops_db"
+
+    # Prepare dict of datasets
+    datasets = {
+        "daily_cost": insights.get("daily"),
+        "monthly_cost": insights.get("monthly"),
+        "service_monthly_cost": insights.get("svc_monthly"),
+        "top_services": insights.get("top_services"),
+        "top_projects": insights.get("top_projects"),
+        "idle_candidates": idle_df,
+        "rightsizing_recommendations": rs_df,
+        "anomalies": anomalies,
+        "forecast": forecast_df,
+        "savings_projection": savings_proj,
+    }
+
+    save_to_mongo(mongo_url, db_name, datasets, recs)
+
 
     print("[8/8] Running self-learning feedback…")
     log_feedback(out_dir_ts, "idle_stop", "accepted", {"idle_count": int(idle_df["idle_final"].sum())})
