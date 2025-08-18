@@ -1,0 +1,7 @@
+AI FinOps Assistant — Run Summary
+Daily points: 153
+Monthly points: 5
+Idle candidates: 18
+Right-sizing recs: 1
+Anomalies: 8
+Forecast horizon days: 30

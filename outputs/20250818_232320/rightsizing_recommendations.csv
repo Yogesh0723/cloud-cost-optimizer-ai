@@ -1,0 +1,2 @@
+project_id,service,from_sku,to_sku,avg_usage,avg_cost,estimated_savings_pct,rationale
+project-alpha,Compute Engine,n2-standard-4,e2-standard-4,22.43,25.49,25.0,Low relative usage for SKU; target cheaper class

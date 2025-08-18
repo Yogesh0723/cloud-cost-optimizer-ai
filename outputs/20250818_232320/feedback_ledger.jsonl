@@ -1,0 +1,7 @@
+{"ts": "2025-08-18T17:53:35.051782+00:00", "id": "idle_stop", "decision": "accepted", "meta": {"idle_count": 18}}
+{"ts": "2025-08-18T17:53:35.051782+00:00", "id": "rightsize", "decision": "accepted", "meta": {"count": 1}}
+{"ts": "2025-08-18T17:53:35.051782+00:00", "id": "forecast_summary", "decision": "accepted", "meta": {"horizon_days": 30}}
+{"ts": "2025-08-18T17:53:35.051782+00:00", "id": "anomaly_alert", "decision": "accepted", "meta": {"count": 8}}
+{"ts": "2025-08-18T17:53:35.052780+00:00", "id": "rightsize", "decision": "accepted", "meta": {"count": 1}}
+{"ts": "2025-08-18T17:53:35.052780+00:00", "id": "idle_stop", "decision": "accepted", "meta": {"idle_count": 18}}
+{"ts": "2025-08-18T17:53:35.052780+00:00", "id": "savings_projection", "decision": "accepted", "meta": {"predicted_spend": 7895.07}}

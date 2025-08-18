@@ -1,0 +1,216 @@
+[
+  {
+    "type": "stop_idle",
+    "project_id": "project-beta",
+    "resource": "db-n1-standard-2",
+    "saving_estimate_month": 504.24,
+    "explanation": "Idle by rules/clustering. Recent avg usage=21.10",
+    "risk": "low"
+  },
+  {
+    "type": "stop_idle",
+    "project_id": "project-beta",
+    "resource": "Egress",
+    "saving_estimate_month": 469.2,
+    "explanation": "Idle by rules/clustering. Recent avg usage=21.48",
+    "risk": "low"
+  },
+  {
+    "type": "stop_idle",
+    "project_id": "project-beta",
+    "resource": "e2-standard-2",
+    "saving_estimate_month": 459.0,
+    "explanation": "Idle by rules/clustering. Recent avg usage=24.58",
+    "risk": "low"
+  },
+  {
+    "type": "stop_idle",
+    "project_id": "project-alpha",
+    "resource": "n2-standard-4",
+    "saving_estimate_month": 454.16,
+    "explanation": "Idle by rules/clustering. Recent avg usage=24.25",
+    "risk": "low"
+  },
+  {
+    "type": "stop_idle",
+    "project_id": "project-alpha",
+    "resource": "Nearline Storage",
+    "saving_estimate_month": 427.11,
+    "explanation": "Idle by rules/clustering. Recent avg usage=26.09",
+    "risk": "low"
+  },
+  {
+    "type": "stop_idle",
+    "project_id": "project-alpha",
+    "resource": "Active Storage",
+    "saving_estimate_month": 406.74,
+    "explanation": "Idle by rules/clustering. Recent avg usage=25.14",
+    "risk": "low"
+  },
+  {
+    "type": "stop_idle",
+    "project_id": "project-beta",
+    "resource": "n2-highmem-8",
+    "saving_estimate_month": 387.32,
+    "explanation": "Idle by rules/clustering. Recent avg usage=21.55",
+    "risk": "low"
+  },
+  {
+    "type": "stop_idle",
+    "project_id": "project-alpha",
+    "resource": "e2-standard-2",
+    "saving_estimate_month": 381.47,
+    "explanation": "Idle by rules/clustering. Recent avg usage=22.47",
+    "risk": "low"
+  },
+  {
+    "type": "stop_idle",
+    "project_id": "project-alpha",
+    "resource": "GKE Nodes",
+    "saving_estimate_month": 372.86,
+    "explanation": "Idle by rules/clustering. Recent avg usage=24.34",
+    "risk": "low"
+  },
+  {
+    "type": "stop_idle",
+    "project_id": "project-beta",
+    "resource": "Nearline Storage",
+    "saving_estimate_month": 372.06,
+    "explanation": "Idle by rules/clustering. Recent avg usage=22.94",
+    "risk": "low"
+  },
+  {
+    "type": "stop_idle",
+    "project_id": "project-alpha",
+    "resource": "db-f1-micro",
+    "saving_estimate_month": 369.62,
+    "explanation": "Idle by rules/clustering. Recent avg usage=22.18",
+    "risk": "low"
+  },
+  {
+    "type": "stop_idle",
+    "project_id": "project-alpha",
+    "resource": "Query Processing",
+    "saving_estimate_month": 366.84,
+    "explanation": "Idle by rules/clustering. Recent avg usage=22.34",
+    "risk": "low"
+  },
+  {
+    "type": "stop_idle",
+    "project_id": "project-beta",
+    "resource": "Active Storage",
+    "saving_estimate_month": 349.54,
+    "explanation": "Idle by rules/clustering. Recent avg usage=23.91",
+    "risk": "low"
+  },
+  {
+    "type": "stop_idle",
+    "project_id": "project-alpha",
+    "resource": "Egress",
+    "saving_estimate_month": 327.47,
+    "explanation": "Idle by rules/clustering. Recent avg usage=24.47",
+    "risk": "low"
+  },
+  {
+    "type": "stop_idle",
+    "project_id": "project-alpha",
+    "resource": "db-n1-standard-2",
+    "saving_estimate_month": 318.15,
+    "explanation": "Idle by rules/clustering. Recent avg usage=18.72",
+    "risk": "low"
+  },
+  {
+    "type": "stop_idle",
+    "project_id": "project-alpha",
+    "resource": "n2-highmem-8",
+    "saving_estimate_month": 241.86,
+    "explanation": "Idle by rules/clustering. Recent avg usage=21.20",
+    "risk": "low"
+  },
+  {
+    "type": "stop_idle",
+    "project_id": "project-alpha",
+    "resource": "GKE Control Plane",
+    "saving_estimate_month": 230.4,
+    "explanation": "Idle by rules/clustering. Recent avg usage=19.87",
+    "risk": "low"
+  },
+  {
+    "type": "stop_idle",
+    "project_id": "project-beta",
+    "resource": "db-f1-micro",
+    "saving_estimate_month": 161.46,
+    "explanation": "Idle by rules/clustering. Recent avg usage=23.77",
+    "risk": "low"
+  },
+  {
+    "type": "rightsize",
+    "project_id": "project-alpha",
+    "resource": "n2-standard-4\u2192e2-standard-4",
+    "saving_estimate_pct": 25.0,
+    "explanation": "Low relative usage for SKU; target cheaper class",
+    "risk": "medium"
+  },
+  {
+    "type": "anomaly_alert",
+    "date": "2025-03-05",
+    "spend": 152.01,
+    "explanation": "Spend outlier (IForest/AE ensemble)",
+    "risk": "n/a"
+  },
+  {
+    "type": "anomaly_alert",
+    "date": "2025-03-30",
+    "spend": 462.25,
+    "explanation": "Spend outlier (IForest/AE ensemble)",
+    "risk": "n/a"
+  },
+  {
+    "type": "anomaly_alert",
+    "date": "2025-04-03",
+    "spend": 466.34000000000003,
+    "explanation": "Spend outlier (IForest/AE ensemble)",
+    "risk": "n/a"
+  },
+  {
+    "type": "anomaly_alert",
+    "date": "2025-04-10",
+    "spend": 137.76,
+    "explanation": "Spend outlier (IForest/AE ensemble)",
+    "risk": "n/a"
+  },
+  {
+    "type": "anomaly_alert",
+    "date": "2025-04-14",
+    "spend": 87.92,
+    "explanation": "Spend outlier (IForest/AE ensemble)",
+    "risk": "n/a"
+  },
+  {
+    "type": "anomaly_alert",
+    "date": "2025-05-18",
+    "spend": 482.17,
+    "explanation": "Spend outlier (IForest/AE ensemble)",
+    "risk": "n/a"
+  },
+  {
+    "type": "anomaly_alert",
+    "date": "2025-06-15",
+    "spend": 427.56,
+    "explanation": "Spend outlier (IForest/AE ensemble)",
+    "risk": "n/a"
+  },
+  {
+    "type": "anomaly_alert",
+    "date": "2025-06-20",
+    "spend": 108.03999999999999,
+    "explanation": "Spend outlier (IForest/AE ensemble)",
+    "risk": "n/a"
+  },
+  {
+    "type": "forecast_summary",
+    "horizon_days": 30,
+    "projected_spend_sum": 7895.0703125,
+    "explanation": "Projected next-period spend"
+  }
+]
