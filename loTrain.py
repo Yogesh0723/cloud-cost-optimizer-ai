@@ -29,6 +29,9 @@ MODELS_DIR = "models"
 MODEL_SAVE_PATH = os.path.join(MODELS_DIR, 'name_ner_bert')
 ARTIFACTS_DIR = os.path.join('name_ner_bert_artifacts')
 
+# Local pre-trained model path
+LOCAL_BERT_PATH = "BERT"  # Path to your local BERT model directory
+
 # Create directories if they don't exist
 os.makedirs(DATA_DIR, exist_ok=True)
 os.makedirs(MODELS_DIR, exist_ok=True)
@@ -205,9 +208,52 @@ def compute_metrics(predictions, true_labels, idx2tag):
 # Enhanced Training Loop
 # =======================
 
+def verify_local_model(model_path):
+    """Verify that all required model files exist"""
+    required_files = [
+        'config.json',
+        'model.safetensors',  # or 'pytorch_model.bin'
+        'tokenizer_config.json',
+        'tokenizer.json',
+        'vocab.txt'
+    ]
+    
+    missing_files = []
+    for file in required_files:
+        if not os.path.exists(os.path.join(model_path, file)):
+            missing_files.append(file)
+    
+    if missing_files:
+        # Check for alternative model file names
+        if 'model.safetensors' in missing_files and os.path.exists(os.path.join(model_path, 'pytorch_model.bin')):
+            missing_files.remove('model.safetensors')
+    
+    return missing_files
+
 def train_model():
-    print("Starting Enhanced BERT fine-tuning...")
+    print("Starting Enhanced BERT fine-tuning with LOCAL pre-trained model...")
     start_time = time.time()
+    
+    # Verify local model files
+    print(f"\n=> Checking local BERT model at: {LOCAL_BERT_PATH}")
+    missing_files = verify_local_model(LOCAL_BERT_PATH)
+    
+    if missing_files:
+        print(f"❌ Missing required files in {LOCAL_BERT_PATH}:")
+        for file in missing_files:
+            print(f"   - {file}")
+        print(f"\nRequired files structure:")
+        print(f"   {LOCAL_BERT_PATH}/")
+        print(f"   ├── config.json")
+        print(f"   ├── model.safetensors (or pytorch_model.bin)")
+        print(f"   ├── tokenizer_config.json")
+        print(f"   ├── tokenizer.json")
+        print(f"   └── vocab.txt")
+        print(f"\nFalling back to downloading from Hugging Face...")
+        model_name_or_path = 'distilbert-base-uncased'
+    else:
+        print(f"✅ All required files found in {LOCAL_BERT_PATH}")
+        model_name_or_path = LOCAL_BERT_PATH
     
     # Load and process data
     sentences, labels = load_dataset_and_tag(DATA_FILE)
@@ -230,8 +276,15 @@ def train_model():
     json.dump(idx2tag, open(os.path.join(ARTIFACTS_DIR, "idx2tag.json"), "w"))
     print(f"Tag classes: {len(tag2idx)} - {list(tag2idx.keys())}")
 
-    # Load tokenizer
-    tokenizer = DistilBertTokenizerFast.from_pretrained('distilbert-base-uncased')
+    # Load tokenizer from local or remote
+    print(f"=> Loading tokenizer from: {model_name_or_path}")
+    try:
+        tokenizer = DistilBertTokenizerFast.from_pretrained(model_name_or_path, local_files_only=(model_name_or_path == LOCAL_BERT_PATH))
+        print("✅ Tokenizer loaded successfully!")
+    except Exception as e:
+        print(f"❌ Error loading tokenizer: {e}")
+        print("Falling back to Hugging Face...")
+        tokenizer = DistilBertTokenizerFast.from_pretrained('distilbert-base-uncased')
 
     # Tokenize and align labels
     print("\n=> Tokenizing and aligning labels...")
@@ -255,15 +308,29 @@ def train_model():
     val_dataloader = DataLoader(val_dataset, sampler=SequentialSampler(val_dataset), 
                               batch_size=BATCH_SIZE)
 
-    # Initialize model
-    print("\n=> Building Enhanced DistilBERT model...")
-    model = DistilBertForTokenClassification.from_pretrained(
-        "distilbert-base-uncased",
-        num_labels=len(tag2idx),
-        id2label=idx2tag,
-        label2id=tag2idx,
-        dropout=0.3  # Add dropout for regularization
-    )
+    # Initialize model from local or remote
+    print(f"\n=> Building Enhanced DistilBERT model from: {model_name_or_path}")
+    try:
+        model = DistilBertForTokenClassification.from_pretrained(
+            model_name_or_path,
+            num_labels=len(tag2idx),
+            id2label=idx2tag,
+            label2id=tag2idx,
+            dropout=0.3,  # Add dropout for regularization
+            local_files_only=(model_name_or_path == LOCAL_BERT_PATH)
+        )
+        print("✅ Model loaded successfully!")
+    except Exception as e:
+        print(f"❌ Error loading model from {model_name_or_path}: {e}")
+        print("Falling back to Hugging Face...")
+        model = DistilBertForTokenClassification.from_pretrained(
+            "distilbert-base-uncased",
+            num_labels=len(tag2idx),
+            id2label=idx2tag,
+            label2id=tag2idx,
+            dropout=0.3
+        )
+    
     model.to(device)
 
     # Enhanced optimizer with weight decay
